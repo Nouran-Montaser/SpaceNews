@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SpaceNews</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="space_now">Space Now</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="no_news">no news</string>
+</resources>
