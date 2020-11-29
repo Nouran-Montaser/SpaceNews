@@ -1,5 +1,6 @@
 package com.nouranmontaser.spacenews.data
 
+import android.util.Log
 import com.nouranmontaser.spacenews.R
 import com.nouranmontaser.spacenews.data.local.LocalData
 import com.nouranmontaser.spacenews.data.model.News
@@ -17,7 +18,7 @@ class DataRepository @Inject constructor(
     override suspend fun getNews(): Flow<Resource<List<News?>>> {
         return flow {
             emit(Resource.Loading)
-            val news: List<News?>? = localData.getSavedNews()
+            val news: List<News?> = localData.getSavedNews()
             try {
                 val newsList = remoteData.getNews()
                 if (newsList is Resource.Success) {
@@ -29,6 +30,7 @@ class DataRepository @Inject constructor(
                 } else
                     emit(Resource.Error(news, R.string.no_internet))
             } catch (e: Exception) {
+                Log.e("error:","get news", e)
                 emit(Resource.Error(news,  R.string.no_internet))
             }
         }

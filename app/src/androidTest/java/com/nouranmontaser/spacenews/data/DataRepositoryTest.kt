@@ -9,6 +9,7 @@ import com.nouranmontaser.spacenews.data.local.LocalData
 import com.nouranmontaser.spacenews.data.model.News
 import com.nouranmontaser.spacenews.data.remote.RemoteData
 import com.nouranmontaser.spacenews.utils.Resource
+import com.squareup.moshi.Moshi
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,9 +44,10 @@ class DataRepositoryTest {
     lateinit var remoteData: RemoteData
 
     @Inject
-    @Named("test-mockServer")
     lateinit var mockWebServer: MockWebServer
 
+    @Inject
+    lateinit var moshi: Moshi
 
     @Before
     fun setUp() {
@@ -58,18 +60,24 @@ class DataRepositoryTest {
 
     @Test
     fun getNewsReturnsSuccess(): Unit = runBlocking {
-        val mockResponse = MockResponse()
-        mockResponse.setResponseCode(200)
-        mockResponse.setBody(Utils.readStringFromFile("success_response.json"))
-        mockWebServer.enqueue(mockResponse)
-        val repository = DataRepository(localData, remoteData)
+        val newsMockResponse = MockResponse()
+        newsMockResponse.setResponseCode(200)
+        newsMockResponse.setBody(Utils.readStringFromFile("news_success_response.json"))
+        mockWebServer.enqueue(newsMockResponse)
 
+        val newsDetailsMockResponse = MockResponse()
+        newsDetailsMockResponse.setResponseCode(200)
+        newsDetailsMockResponse.setBody(Utils.readStringFromFile("news_details_success_response.json"))
+        mockWebServer.enqueue(newsDetailsMockResponse)
+
+        val repository = DataRepository(localData, remoteData)
         val response = repository.getNews().toList()
-        mockWebServer.takeRequest()
+
+//        mockWebServer.takeRequest(1L, TimeUnit.MINUTES )
         Truth.assertThat(response).containsExactly(
             Resource.Loading,
             Resource.Success(
-                Utils.readStringFromFile("success_response.json")
+                Utils.readFileResponseToListOfObject<News>("news_output_success_response.json", moshi)
             )
         )
     }
@@ -77,7 +85,7 @@ class DataRepositoryTest {
     @Test
     fun getNewsReturnsError(): Unit = runBlocking {
         val mockResponse = MockResponse()
-        mockResponse.setBody(Utils.readStringFromFile("success_response.json"))
+        mockResponse.setBody(Utils.readStringFromFile("news_success_response.json"))
         mockResponse.setResponseCode(404)
         mockWebServer.enqueue(mockResponse)
 

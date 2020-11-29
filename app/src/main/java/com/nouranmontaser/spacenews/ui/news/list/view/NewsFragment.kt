@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nouranmontaser.spacenews.utils.Resource
 import com.nouranmontaser.spacenews.data.model.News
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class NewsFragment : Fragment(), NewsAdapter.Delegate {
 
     private lateinit var binding: FragmentNewsBinding
-    private val viewModel: NewsViewModel by viewModels()
+    lateinit var viewModel: NewsViewModel
     lateinit var adapter: NewsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,12 +34,13 @@ class NewsFragment : Fragment(), NewsAdapter.Delegate {
 
     private fun initUi() {
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        binding.hasNews = false
+        viewModel = ViewModelProvider(requireActivity()).get(NewsViewModel::class.java)
         adapter = NewsAdapter(this)
         binding.newsRecyclerView.adapter = adapter
     }
 
-    private fun subscribeUi() {
+    fun subscribeUi() {
         observe(viewModel.news, ::handelNews)
     }
 

@@ -28,9 +28,8 @@ object TestAppModule {
     @Singleton
     @Provides
     @Named("test-retrofit")
-    fun provideRetrofit(okHttpClient: OkHttpClient, @Named("test-mockServer") mockWebServer: MockWebServer): Retrofit {
-        val moshi = Moshi.Builder().build()
-        return Retrofit.Builder().baseUrl(mockWebServer.url("/")).client(okHttpClient).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient, mockWebServer: MockWebServer): Retrofit {
+        return Retrofit.Builder().baseUrl(mockWebServer.url("/").toString()).client(okHttpClient).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
     }
 
     @Provides
@@ -57,6 +56,5 @@ object TestAppModule {
 
     @Singleton
     @Provides
-    @Named("test-mockServer")
     fun provideMockServer() = MockWebServer()
 }

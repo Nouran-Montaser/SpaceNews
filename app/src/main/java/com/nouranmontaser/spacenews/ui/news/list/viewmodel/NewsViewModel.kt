@@ -16,7 +16,7 @@ class NewsViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _news = MutableLiveData<Resource<List<News?>>>()
-    val news: LiveData<Resource<List<News?>>> = _news
+    var news: LiveData<Resource<List<News?>>> = _news
 
     init {
         getNews()

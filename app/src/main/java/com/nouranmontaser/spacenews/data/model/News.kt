@@ -20,21 +20,6 @@ data class News (
     val url: String?,
     @Json(name = "publication")
     val publication: String?,
-    @Json(name = "mission")
-    val mission: String?,
-    @Json(name = "abstract")
-    val abstractNews: String?,
     @Json(name = "thumbnail")
-    val thumbnail: String?,
-    @Json(name = "thumbnail_retina")
-    val thumbnail_retina: String?,
-    @Json(name = "thumbnail_1x")
-    val thumbnail_1x: String?,
-    @Json(name = "thumbnail_2x")
-    val thumbnail_2x: String?,
-    @Json(name = "keystone_image_1x")
-    val keystone_image_1x: String?,
-    @Json(name = "keystone_image_2x")
-    val keystone_image_2x: String?,
-    val isFavourite: Boolean? = false,
+    val thumbnail: String?
 ) : Parcelable

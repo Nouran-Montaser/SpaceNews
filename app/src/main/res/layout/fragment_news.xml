@@ -15,9 +15,6 @@
             name="hasNews"
             type="Boolean" />
 
-        <variable
-            name="viewModel"
-            type="com.nouranmontaser.spacenews.ui.news.list.viewmodel.NewsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
