@@ -57,9 +57,8 @@ class NewsFragmentTest  {
     @Test
     fun displayNewsListSucceeded() {
         launchFragmentInHiltContainer<NewsFragment> {
-            adapter.newsList = listOf(
-                News("2020-51", "Simulations Show Webb Telescope Can Reveal Distant Galaxies Hidden in Quasars' Glare", "https://webbtelescope.org/contents/news-releases/2020/news-2020-51", "2020-10-14T10:00:00.000-04:00", "")
-            )
+            viewModel = NewsViewModel(FakeDataRepository())
+            subscribeUi()
         }
         onView(withId(R.id.news_recycler_view)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
